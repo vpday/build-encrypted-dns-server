@@ -44,7 +44,6 @@ jobs:
           ref: master
 
       - name: Install Rust toolchain
-        uses: hecrj/setup-rust-action@master
         run: |
           curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --profile minimal --default-toolchain none -y -v
           echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
