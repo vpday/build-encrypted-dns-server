@@ -1,5 +1,8 @@
 name: build encrypted-dns-server
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   push:
@@ -81,10 +84,8 @@ jobs:
           name: encrypted-dns_${{ matrix.target_alias }}
           path: ${{ env.ARCHIVE_PATH }}
 
-      - name: Create release
+      - name: Release
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ env.RELEASE_NAME }}
           tag_name: ${{ env.TAG_NAME }}
