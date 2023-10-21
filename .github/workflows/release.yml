@@ -55,7 +55,6 @@ jobs:
           key: x64
 
       - name: Check Cargo availability
-        uses: actions-rs/cargo@v1
         run: cargo --version
 
       - name: Build
