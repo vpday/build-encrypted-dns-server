@@ -45,14 +45,10 @@ jobs:
 
       - uses: goto-bus-stop/setup-zig@v2
 
-      - name: Install Rust toolchain
-        run: |
-          apt-get update && apt-get install -y build-essential curl
-          curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --profile minimal --default-toolchain none -y
-          echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
-          rustup update --no-self-update stable
-          rustup target add ${{ matrix.target }}
-          rustup component add rust-src
+      - uses: hecrj/setup-rust-action@2
+        with:
+          rust-version: stable
+          targets: ${{ matrix.target }}
 
       - name: Check Cargo availability
         run: cargo --version
