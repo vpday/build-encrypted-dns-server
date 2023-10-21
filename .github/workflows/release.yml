@@ -45,7 +45,7 @@ jobs:
 
       - name: Install Rust toolchain
         run: |
-          curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --profile minimal --default-toolchain none -y -v
+          curl --proto '=https' --tlsv1.2 --retry 10 -fsSL "https://sh.rustup.rs" | sh -s -- --profile minimal --default-toolchain none -y -v
           echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
           rustup update --no-self-update stable
           rustup target add ${{ matrix.target }}
