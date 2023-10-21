@@ -48,7 +48,6 @@ jobs:
       - uses: hecrj/setup-rust-action@v2
         with:
           rust-version: stable
-          targets: ${{ matrix.target }}
 
       - name: Check Cargo availability
         run: cargo --version
