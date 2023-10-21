@@ -43,11 +43,17 @@ jobs:
           repository: DNSCrypt/encrypted-dns-server
           ref: master
 
-      - uses: goto-bus-stop/setup-zig@v2
-
-      - uses: hecrj/setup-rust-action@v2
-        with:
-          rust-version: stable
+      - name: Install Rust toolchain
+        uses: hecrj/setup-rust-action@master
+        run: |
+          curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused -fsSL "https://sh.rustup.rs" | sh -s -- --profile minimal --default-toolchain none -y -v
+          echo "${CARGO_HOME:-$HOME/.cargo}/bin" >> $GITHUB_PATH
+          rustup update --no-self-update stable
+          rustup target add ${{ matrix.target }}
+          rustup component add rust-src
+          echo "rustup_version=$(rustup --version)" >> $GITHUB_OUTPUT
+          echo "cargo_version=$(cargo --version)" >> $GITHUB_OUTPUT
+          echo "rustc_version=$(rustc --version)" >> $GITHUB_OUTPUT
 
       - name: Check Cargo availability
         run: cargo --version
