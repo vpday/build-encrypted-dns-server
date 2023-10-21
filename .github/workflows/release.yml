@@ -54,9 +54,6 @@ jobs:
         with:
           key: x64
 
-      - name: Check Cargo availability
-        run: cargo --version
-
       - name: Build
         run: |
           echo 'lto = "fat"' >> Cargo.toml
@@ -67,22 +64,10 @@ jobs:
           if [ "${{ matrix.os }}" = "ubuntu-20.04" ]; then
             tar cjpf ${ARCHIVE_PATH} encrypted-dns
 
-      - name: Install cargo-deb and build Debian package
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
-        run: |
-          cargo install cargo-deb
-          cargo deb --output=encrypted-dns_${{ github.ref_name }}_amd64.deb --no-build
-
       - uses: actions/upload-artifact@master
         with:
           name: encrypted-dns_${{ matrix.target_alias }}
           path: ${{ env.ARCHIVE_PATH }}
-
-      - uses: actions/upload-artifact@master
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
-        with:
-          name: encrypted-dns_deb-amd64
-          path: encrypted-dns_${{ github.ref_name }}_amd64.deb
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -102,5 +87,4 @@ jobs:
           draft: true
           prerelease: false
           files: |
-            encrypted-dns_deb-amd64/*.deb
             encrypted-dns_linux-x86_64/*.tar.bz2
