@@ -90,4 +90,4 @@ jobs:
           name: ${{ env.RELEASE_NAME }}
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            encrypted-dns_linux-x86_64/*.tar.bz2
+            encrypted-dns_*.tar.bz2
