@@ -73,8 +73,7 @@ jobs:
           mkdir encrypted-dns
           cp target/release/encrypted-dns${{ matrix.bin_suffix }} encrypted-dns/
           cp README.md example-encrypted-dns.toml encrypted-dns/
-          if [ "${{ matrix.os }}" = "ubuntu-20.04" ]; then
-            tar cjpf ${ARCHIVE_PATH} encrypted-dns
+          tar cvjpf ${ARCHIVE_PATH} encrypted-dns
 
       - name: Store archive
         uses: actions/upload-artifact@v3
