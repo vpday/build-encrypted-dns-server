@@ -11,13 +11,11 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ ubuntu-20.04 ]
         include:
-          - os: ubuntu-20.04
-            target: x86_64-unknown-linux-gnu
+          - target: x86_64-unknown-linux-gnu
             target_alias: linux-x86_64
             bin_suffix: ''
             archive_suffix: '.tar.bz2'
@@ -26,11 +24,15 @@ jobs:
         shell: bash
     env:
       ARCHIVE_PATH: encrypted-dns_${{ github.ref_name }}_${{ matrix.target_alias }}${{ matrix.archive_suffix }}
-      RELEASE_NAME: "Released on $(date +%Y%m%d%H)"
     # Use a container with GLIBC 2.17
     container: quay.io/pypa/manylinux2014_x86_64
 
     steps:
+      - name: Set variables
+        run: |
+          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(date +%Y%m%d%H)" >> $GITHUB_ENV
+
       - name: Show GLIBC
         run: ldd --version
 
@@ -85,5 +87,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
           files: |
             encrypted-dns_linux-x86_64/*.tar.bz2
