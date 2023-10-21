@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ ubuntu-20.04 ]
         include:
           - os: ubuntu-20.04
             target: x86_64-unknown-linux-gnu
@@ -56,17 +56,28 @@ jobs:
         with:
           key: x64
 
-      - name: Build
+      - name: Prepare build
         run: |
           echo 'lto = "fat"' >> Cargo.toml
-          env RUSTFLAGS="-C strip=symbols" cargo build --release
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTFLAGS: "-C strip=symbols"
+        with:
+          command: build
+          args: --release
+
+      - name: Prepare archive
+        run: |
           mkdir encrypted-dns
           cp target/release/encrypted-dns${{ matrix.bin_suffix }} encrypted-dns/
           cp README.md example-encrypted-dns.toml encrypted-dns/
           if [ "${{ matrix.os }}" = "ubuntu-20.04" ]; then
             tar cjpf ${ARCHIVE_PATH} encrypted-dns
 
-      - uses: actions/upload-artifact@master
+      - name: Store archive
+        uses: actions/upload-artifact@v3
         with:
           name: encrypted-dns_${{ matrix.target_alias }}
           path: ${{ env.ARCHIVE_PATH }}
