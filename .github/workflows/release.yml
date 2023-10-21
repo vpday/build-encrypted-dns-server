@@ -33,7 +33,11 @@ jobs:
     container: quay.io/pypa/manylinux2014_x86_64
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Show GLIBC
+        run: ldd --version
+
+      - name: Checkout sources
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           repository: DNSCrypt/encrypted-dns-server
