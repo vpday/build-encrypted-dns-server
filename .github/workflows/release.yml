@@ -45,7 +45,7 @@ jobs:
 
       - uses: goto-bus-stop/setup-zig@v2
 
-      - uses: hecrj/setup-rust-action@2
+      - uses: hecrj/setup-rust-action@v2
         with:
           rust-version: stable
           targets: ${{ matrix.target }}
