@@ -55,10 +55,6 @@ jobs:
           override: true
           profile: minimal
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: x64
-
       - name: Prepare build
         run: |
           echo 'lto = "fat"' >> Cargo.toml
